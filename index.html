@@ -37,6 +37,14 @@ h1{font-stretch:80%;font-weight:750;font-size:clamp(26px,4vw,38px);line-height:1
 .seg.big button{font-size:18px;padding:10px 26px}
 button:focus-visible,summary:focus-visible{outline:3px solid var(--c1);outline-offset:2px}
 
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:22px}
+.links a{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.links a:hover{border-color:var(--c2)}
+.links a:focus-visible{outline:3px solid var(--c1);outline-offset:2px}
+.links .ic{flex:none;width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-size:18px;background:var(--track)}
+.links b{display:block;font-size:15px}
+.links small{display:block;font-size:13px;color:var(--muted)}
+.links .go{margin-left:auto;color:var(--muted);font-size:18px}
 .summary{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);align-items:stretch;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 18px;margin-bottom:24px}
 .step{text-align:center;padding:0 6px}
 .step .when{font-size:15px;font-weight:600;color:var(--muted)}
@@ -103,6 +111,11 @@ tfoot td{font-weight:700;border-top:2px solid var(--ink);border-bottom:0}
       <button data-bloco="4" aria-pressed="false">Bloco 4</button>
     </div>
   </div>
+
+  <nav class="links" aria-label="Arquivos das redes">
+    <a href="https://aegeactl.sharepoint.com/sites/GTAdministraoContratual/Shared%20Documents/Forms/AllItems.aspx?d=w90473a77ef2c4385a211efe96e623450&amp;csf=1&amp;web=1&amp;e=CM0LBy&amp;CT=1790166362844&amp;OR=OWA%2DNT%2DMail&amp;CID=4c1d2e8d%2D705a%2D7104%2D8140%2Dd05a0d62b210&amp;SI=NonSentItems&amp;SLSync=Y&amp;FolderCTID=0x012000D6E8275B54E486409C77C2E39DA00D25&amp;id=%2Fsites%2FGTAdministraoContratual%2FShared%20Documents%2FGeneral%2F000%2E%20RO%202026%20%2D%20C%2F00%2E%20Compartilhados%20A%26M%2FNT%20Cobertura%2FResultados%20Cobertura" target="_blank" rel="noopener noreferrer"><span class="ic" aria-hidden="true">📂</span><span><b>Rede inicial e rede atual</b><small>Arquivos no SharePoint · Resultados Cobertura</small></span><span class="go" aria-hidden="true">↗</span></a>
+    <a href="https://aegeactl.sharepoint.com/sites/GTAdministraoContratual/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FGTAdministraoContratual%2FShared%20Documents%2FGeneral%2F02%2E%20Rev%2E%20Of%C3%ADcios%2FIDG%2F2026%2E03%2E09%5FBase%5FGIS&amp;viewid=7d347425%2D7075%2D4e3e%2D8835%2D244d3a6c8116&amp;d=w90473a77ef2c4385a211efe96e623450&amp;csf=1&amp;CT=1789994584794&amp;OR=OWA%2DNT%2DMail&amp;CID=275735b4%2D8cfa%2D717d%2Df42f%2D9aed86f45ddf&amp;SI=NonSentItems&amp;SLSync=Y&amp;FolderCTID=0x012000D6E8275B54E486409C77C2E39DA00D25" target="_blank" rel="noopener noreferrer"><span class="ic" aria-hidden="true">📂</span><span><b>Rede IDG 2025</b><small>Arquivos no SharePoint · Base GIS do IDG</small></span><span class="go" aria-hidden="true">↗</span></a>
+  </nav>
 
   <section class="summary" id="summary" aria-live="polite"></section>
 
