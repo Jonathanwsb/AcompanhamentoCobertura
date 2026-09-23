@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cobertura de água e esgoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDF1F0; --surface:#FFFFFF; --ink:#15232C; --muted:#5B6970; --line:#D3DCDB; --track:#E6ECEB;
+  --c0:#B7C4C9; --c1:#8C7BB8; --c2:#1C6CA6;
+  --up:#1E7A4F; --down:#B3372B;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  font-family:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+body.esgoto{ --c2:#8A6224; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0F171C; --surface:#16222A; --ink:#E4ECEE; --muted:#93A3AA; --line:#2B3A42; --track:#223039;
+  --c0:#4E5E66; --c1:#9C88D0; --c2:#5AA8DD; --up:#4FC08A; --down:#EE7A6E;
+} :root:not([data-theme="light"]) body.esgoto{ --c2:#D1A461; } }
+:root[data-theme="dark"]{
+  --paper:#0F171C; --surface:#16222A; --ink:#E4ECEE; --muted:#93A3AA; --line:#2B3A42; --track:#223039;
+  --c0:#4E5E66; --c1:#9C88D0; --c2:#5AA8DD; --up:#4FC08A; --down:#EE7A6E;
+}
+:root[data-theme="dark"] body.esgoto{ --c2:#D1A461; }
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.45;font-variant-numeric:tabular-nums}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 56px}
+h1{font-stretch:80%;font-weight:750;font-size:clamp(26px,4vw,38px);line-height:1.1;margin:0 0 18px}
+.controls{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{font:inherit;font-size:15px;border:0;background:transparent;color:var(--muted);padding:8px 18px;border-radius:999px;cursor:pointer;font-weight:600}
+.seg button[aria-pressed="true"]{background:var(--c2);color:#fff}
+.seg.big button{font-size:18px;padding:10px 26px}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--c1);outline-offset:2px}
+
+.summary{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);align-items:stretch;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 18px;margin-bottom:24px}
+.step{text-align:center;padding:0 6px}
+.step .when{font-size:15px;font-weight:600;color:var(--muted)}
+.step .pct{font-size:clamp(34px,6vw,54px);font-weight:800;font-stretch:80%;line-height:1.05;margin:4px 0}
+.step .sub{font-size:13px;color:var(--muted)}
+.s0 .pct{color:var(--muted)} .s1 .pct{color:var(--c1)} .s2 .pct{color:var(--c2)}
+.arrow{align-self:center;color:var(--muted);font-size:26px}
+.verdict{grid-column:1/-1;text-align:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:15px}
+.pos{color:var(--up);font-weight:700} .neg{color:var(--down);font-weight:700} .eq{color:var(--muted);font-weight:700}
+
+.list{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px 20px 12px}
+.listhead{display:flex;flex-wrap:wrap;gap:10px 20px;justify-content:space-between;align-items:center;padding:12px 0 10px;border-bottom:1px solid var(--line)}
+.listhead h2{margin:0;font-size:19px}
+.key{display:flex;gap:16px;font-size:14px;color:var(--muted)}
+.key i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.mun{display:grid;grid-template-columns:200px 1fr 88px;gap:6px 16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.mun:last-child{border-bottom:0}
+.mun .nm{font-weight:650;font-size:15px;line-height:1.2}
+.mun .nm small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+.bars{display:grid;gap:3px}
+.bar{display:grid;grid-template-columns:1fr 52px;gap:8px;align-items:center;font-size:13px}
+.bar .t{height:9px;background:var(--track);border-radius:5px;overflow:hidden}
+.bar .t i{display:block;height:100%;border-radius:5px}
+.bar span{text-align:right;color:var(--muted)}
+.bar.b2 span{color:var(--ink);font-weight:700}
+.chg{text-align:right;font-size:13px;line-height:1.3;color:var(--muted)}
+.chg b{display:block;font-size:15px;white-space:nowrap}
+.zeros{font-size:14px;color:var(--muted);padding:14px 0 4px}
+details{margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 20px}
+summary{cursor:pointer;font-weight:600}
+.tablewrap{overflow-x:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:nth-child(-n+2),td:nth-child(-n+2){text-align:left}
+th{color:var(--muted);font-weight:600}
+tfoot td{font-weight:700;border-top:2px solid var(--ink);border-bottom:0}
+.note{font-size:13px;color:var(--muted);margin:10px 0 0}
+@media (max-width:640px){
+  .wrap{padding:20px 14px 40px}
+  .summary{padding:18px 8px}
+  .step{padding:0 2px}
+  .step .pct{font-size:26px}
+  .step .when{font-size:13px}
+  .verdict{font-size:14px}
+  .arrow{font-size:18px}
+  .mun{grid-template-columns:1fr auto}
+  .mun .bars{grid-column:1/-1;grid-row:2}
+  .mun .chg{grid-row:1;grid-column:2}
+  .key{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cobertura de água e esgoto</h1>
+  <div class="controls">
+    <div class="seg big" role="group" aria-label="Serviço">
+      <button data-svc="agua" aria-pressed="true">Água</button>
+      <button data-svc="esgoto" aria-pressed="false">Esgoto</button>
+    </div>
+    <div class="seg" role="group" aria-label="Bloco">
+      <button data-bloco="all" aria-pressed="true">Todos</button>
+      <button data-bloco="1" aria-pressed="false">Bloco 1</button>
+      <button data-bloco="4" aria-pressed="false">Bloco 4</button>
+    </div>
+  </div>
+
+  <section class="summary" id="summary" aria-live="polite"></section>
+
+  <section class="list">
+    <div class="listhead">
+      <h2 id="listTitle">Por município</h2>
+      <div class="key"><span><i style="background:var(--c0)"></i>Inicial</span><span><i style="background:var(--c1)"></i>2025 (IDG)</span><span><i style="background:var(--c2)"></i>Hoje</span></div>
+    </div>
+    <div id="rows"></div>
+    <div class="zeros" id="zeros"></div>
+  </section>
+
+  <details>
+    <summary>Ver números detalhados</summary>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Bloco</th><th>Município</th><th>Denominador</th><th>Inicial</th><th>%</th><th>IDG 2025</th><th>%</th><th>Hoje</th><th>%</th></tr></thead>
+      <tbody id="tbody"></tbody><tfoot><tr id="tfoot"></tr></tfoot>
+    </table></div>
+    <p class="note">Inicial = Ano 0 (ID002). 2025 = valor protocolado no IDG. Hoje = numerador atual. O total de 2025 usa o denominador de cada município no protocolo (numerador IDG ÷ % IDG), já que em alguns casos ele difere do denominador atual.</p>
+  </details>
+</div>
+<script>
+const DATA = {"agua": [{"bloco": 1, "mun": "Aperibé", "den": 4590, "n0": 4211, "p0": 0.9174291938997822, "nidg": 4449, "pidg": 0.9745892661555312, "na": 4246, "pa": 0.9250544662309368}, {"bloco": 4, "mun": "Belford Roxo", "den": 197946, "n0": 144803, "p0": 0.7315277904074848, "nidg": 134633, "pidg": 0.7013048574033077, "na": 149557, "pa": 0.7555444414133148}, {"bloco": 1, "mun": "Cachoeiras de Macacu", "den": 23732, "n0": 1986, "p0": 0.08368447665599191, "nidg": 3438, "pidg": 0.14642872354018485, "na": 1986, "pa": 0.08368447665599191}, {"bloco": 1, "mun": "Cambuci", "den": 5659, "n0": 4744, "p0": 0.8383106555928609, "nidg": 5184, "pidg": 0.9534669854699283, "na": 4757, "pa": 0.8406078812511044}, {"bloco": 1, "mun": "Cantagalo", "den": 7145, "n0": 4864, "p0": 0.6807557732680196, "nidg": 5751, "pidg": 0.9241523381005946, "na": 4947, "pa": 0.692372288313506}, {"bloco": 1, "mun": "Casimiro de Abreu", "den": 12527, "n0": 9664, "p0": 0.7714536600941966, "nidg": 11910, "pidg": 0.9437400950871633, "na": 10411, "pa": 0.8310848567095075}, {"bloco": 1, "mun": "Cordeiro", "den": 9190, "n0": 7271, "p0": 0.7911860718171926, "nidg": 8566, "pidg": 0.9400790166812993, "na": 7394, "pa": 0.8045701849836779}, {"bloco": 1, "mun": "Duas Barras", "den": 3530, "n0": 3181, "p0": 0.9011331444759206, "nidg": 3323, "pidg": 0.9494285714285714, "na": 3189, "pa": 0.9033994334277621}, {"bloco": 4, "mun": "Duque de Caxias", "den": 349695, "n0": 257511, "p0": 0.7363874233260412, "nidg": 240319, "pidg": 0.6901989729686261, "na": 271718, "pa": 0.7770142552796008}, {"bloco": 1, "mun": "Itaboraí", "den": 105822, "n0": 38161, "p0": 0.36061499499158967, "nidg": 52287, "pidg": 0.49766808802253865, "na": 42729, "pa": 0.40378182230538073}, {"bloco": 1, "mun": "Itaocara", "den": 8946, "n0": 7935, "p0": 0.8869885982562039, "nidg": 8663, "pidg": 0.9710794753951351, "na": 7981, "pa": 0.8921305611446456}, {"bloco": 4, "mun": "Japeri", "den": 38291, "n0": 24216, "p0": 0.6324201509493093, "nidg": 24744, "pidg": 0.6499093846032622, "na": 29284, "pa": 0.7647750124050038}, {"bloco": 1, "mun": "Magé", "den": 107278, "n0": 39565, "p0": 0.3688081433285483, "nidg": 45328, "pidg": 0.42593897706236666, "na": 40921, "pa": 0.38144820000372864}, {"bloco": 1, "mun": "Maricá", "den": 103081, "n0": 48657, "p0": 0.4720268526692601, "nidg": 73119, "pidg": 0.7150862574815162, "na": 63935, "pa": 0.6202403934769745}, {"bloco": 4, "mun": "Mesquita", "den": 66647, "n0": 56555, "p0": 0.8485753297222681, "nidg": 62191, "pidg": 0.9348937193710352, "na": 58053, "pa": 0.8710519603282968}, {"bloco": 1, "mun": "Miracema", "den": 10450, "n0": 9270, "p0": 0.8870813397129187, "nidg": 10035, "pidg": 0.9654608427939195, "na": 9283, "pa": 0.8883253588516746}, {"bloco": 4, "mun": "Nilópolis", "den": 59727, "n0": 46885, "p0": 0.7849883637216, "nidg": 51912, "pidg": 0.8729253896988347, "na": 47098, "pa": 0.7885545900514005}, {"bloco": 4, "mun": "Nova Iguaçu", "den": 344800, "n0": 239168, "p0": 0.6936426914153132, "nidg": 277864, "pidg": 0.7987306040553981, "na": 256944, "pa": 0.7451972157772622}, {"bloco": 4, "mun": "Queimados", "den": 60011, "n0": 40850, "p0": 0.6807085367682592, "nidg": 48956, "pidg": 0.8208997769840871, "na": 43983, "pa": 0.7329156321341087}, {"bloco": 1, "mun": "Rio Bonito", "den": 21197, "n0": 14173, "p0": 0.6686323536349483, "nidg": 17371, "pidg": 0.8271117036472717, "na": 14677, "pa": 0.6924093032032835}, {"bloco": 1, "mun": "Rio de Janeiro - Bloco 1", "den": 286861, "n0": 231135, "p0": 0.8057386678565577, "nidg": 268997, "pidg": 0.9470558205854912, "na": 231477, "pa": 0.806930882901475}, {"bloco": 4, "mun": "Rio De Janeiro - Bloco 4", "den": 1167461, "n0": 990039, "p0": 0.8480274715814918, "nidg": 1070791, "pidg": 0.8432202021761059, "na": 1001332, "pa": 0.8577005998487316}, {"bloco": 1, "mun": "São Francisco de Itabapoana", "den": 25577, "n0": 12029, "p0": 0.47030535246510535, "nidg": 17130, "pidg": 0.6732167419925329, "na": 14990, "pa": 0.5860734253430817}, {"bloco": 1, "mun": "São Gonçalo", "den": 409656, "n0": 277176, "p0": 0.6766067139258305, "nidg": 354628, "pidg": 0.871782391189449, "na": 298534, "pa": 0.728743140586248}, {"bloco": 4, "mun": "São João de Meriti", "den": 176434, "n0": 142472, "p0": 0.8075087568155798, "nidg": 160020, "pidg": 0.9081931485391269, "na": 143205, "pa": 0.8116632848543931}, {"bloco": 1, "mun": "São Sebastião do Alto", "den": 1987, "n0": 1872, "p0": 0.9421238047307499, "nidg": 1877, "pidg": 0.9547304170905392, "na": 1880, "pa": 0.9461499748364368}, {"bloco": 1, "mun": "Saquarema", "den": 11809, "n0": 5238, "p0": 0.44355999661275297, "nidg": 9683, "pidg": 0.9035177754968742, "na": 8672, "pa": 0.7343551528495216}, {"bloco": 1, "mun": "Tanguá", "den": 12510, "n0": 7877, "p0": 0.629656274980016, "nidg": 9556, "pidg": 0.7766579973992198, "na": 8048, "pa": 0.6433253397282174}], "esgoto": [{"bloco": 1, "mun": "Aperibé", "den": 4590, "n0": 3096, "p0": 0.6745098039215687, "nidg": 3186, "pidg": 0.6979189485213582, "na": 3096, "pa": 0.6745098039215687}, {"bloco": 1, "mun": "Cachoeiras de Macacu", "den": 23732, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "Saquarema", "den": 11809, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "Tanguá", "den": 12510, "n0": 0, "p0": 0.0, "nidg": 2171, "pidg": 0.17644668400520155, "na": 1670, "pa": 0.1334932054356515}, {"bloco": 1, "mun": "São Sebastião do Alto", "den": 1987, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "Cambuci", "den": 5659, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "Cantagalo", "den": 7145, "n0": 122, "p0": 0.01707487753673898, "nidg": 0, "pidg": 0.0, "na": 122, "pa": 0.01707487753673898}, {"bloco": 1, "mun": "Casimiro de Abreu", "den": 12527, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "Cordeiro", "den": 9190, "n0": 853, "p0": 0.09281828073993471, "nidg": 884, "pidg": 0.09701492537313433, "na": 872, "pa": 0.09488574537540805}, {"bloco": 1, "mun": "Duas Barras", "den": 3530, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "Itaboraí", "den": 105822, "n0": 2161, "p0": 0.02042108446258812, "nidg": 6592, "pidg": 0.06274270920581741, "na": 6509, "pa": 0.06150894898981308}, {"bloco": 1, "mun": "Itaocara", "den": 8946, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "Rio Bonito", "den": 21197, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "São Francisco de Itabapoana", "den": 25577, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "São Gonçalo", "den": 409656, "n0": 71304, "p0": 0.17405823422578945, "nidg": 81603, "pidg": 0.20060474206276044, "na": 90265, "pa": 0.22034341008065303}, {"bloco": 1, "mun": "Magé", "den": 107278, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "Maricá", "den": 103081, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 1, "mun": "Miracema", "den": 10450, "n0": 0, "p0": 0.0, "nidg": 4221, "pidg": 0.40609967288820475, "na": 3774, "pa": 0.36114832535885166}, {"bloco": 1, "mun": "Rio de Janeiro - Bloco 1", "den": 286861, "n0": 231975, "p0": 0.8086669153353018, "nidg": 254261, "pidg": 0.8951748904184343, "na": 232128, "pa": 0.8092002746975016}, {"bloco": 4, "mun": "Belford Roxo", "den": 197946, "n0": 9709, "p0": 0.04904873046184313, "nidg": 13290, "pidg": 0.06922776403177497, "na": 14007, "pa": 0.07076172289412264}, {"bloco": 4, "mun": "Duque de Caxias", "den": 349695, "n0": 29155, "p0": 0.08337265331217203, "nidg": 55399, "pidg": 0.1591065746091192, "na": 60366, "pa": 0.1726247158237893}, {"bloco": 4, "mun": "Japeri", "den": 38291, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 4, "mun": "Mesquita", "den": 66647, "n0": 0, "p0": 0.0, "nidg": 25202, "pidg": 0.3788521090766964, "na": 31134, "pa": 0.46714780860353805}, {"bloco": 4, "mun": "Nilópolis", "den": 59727, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 82, "pa": 0.0013729134227401343}, {"bloco": 4, "mun": "Nova Iguaçu", "den": 344800, "n0": 644, "p0": 0.0018677494199535963, "nidg": 3361, "pidg": 0.009661321942497744, "na": 5671, "pa": 0.01644721577726218}, {"bloco": 4, "mun": "Queimados", "den": 60011, "n0": 0, "p0": 0.0, "nidg": 29, "pidg": 0.0004862752988916277, "na": 100, "pa": 0.0016663611671193614}, {"bloco": 4, "mun": "São João de Meriti", "den": 176434, "n0": 0, "p0": 0.0, "nidg": 0, "pidg": 0.0, "na": 0, "pa": 0.0}, {"bloco": 4, "mun": "Rio De Janeiro - Bloco 4", "den": 1167461, "n0": 677290, "p0": 0.580139293732296, "nidg": 714868, "pidg": 0.62, "na": 680906, "pa": 0.5832366134714564}]};
+const st={svc:'agua',bloco:'all'};
+const P=v=>(v*100).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+const N=v=>Math.round(v).toLocaleString('pt-BR');
+const PP=v=>{const x=Math.round(v*1000)/10;return (x>0?'+':x<0?'−':'')+Math.abs(x).toLocaleString('pt-BR',{minimumFractionDigits:1})+' p.p.'};
+const C=v=>v>0.0005?'pos':v<-0.0005?'neg':'eq';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function rows(){return DATA[st.svc].filter(r=>st.bloco==='all'||String(r.bloco)===st.bloco).map(r=>({...r,dI:r.pidg>0?r.nidg/r.pidg:r.den}))}
+function agg(rs){const s=k=>rs.reduce((a,r)=>a+r[k],0);const den=s('den'),dI=s('dI');return{den,n0:s('n0'),nidg:s('nidg'),na:s('na'),p0:s('n0')/den,pidg:dI?s('nidg')/dI:0,pa:s('na')/den}}
+function render(){
+  document.body.classList.toggle('esgoto',st.svc==='esgoto');
+  const nome=st.svc==='agua'?'água':'esgoto';
+  const rs=rows(),A=agg(rs);
+  const d0=A.pa-A.p0,d1=A.pa-A.pidg;
+  document.getElementById('summary').innerHTML=`
+    <div class="step s0"><div class="when">Inicial</div><div class="pct">${P(A.p0)}</div><div class="sub">${N(A.n0)} atendidos</div></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="step s1"><div class="when">2025 (IDG)</div><div class="pct">${P(A.pidg)}</div><div class="sub">${N(A.nidg)} atendidos</div></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="step s2"><div class="when">Hoje</div><div class="pct">${P(A.pa)}</div><div class="sub">${N(A.na)} atendidos</div></div>
+    <div class="verdict">Desde o início: <span class="${C(d0)}">${PP(d0)}</span> &nbsp;·&nbsp; Em relação a 2025: <span class="${C(d1)}">${PP(d1)}</span></div>`;
+  const ativos=rs.filter(r=>r.p0>0||r.pidg>0||r.pa>0).sort((a,b)=>b.pa-a.pa);
+  const zer=rs.filter(r=>!(r.p0>0||r.pidg>0||r.pa>0)).map(r=>r.mun).sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  document.getElementById('listTitle').textContent=`Cobertura de ${nome} por município`;
+  const bar=(cls,v,col)=>`<div class="bar ${cls}"><div class="t"><i style="width:${v*100}%;background:${col}"></i></div><span>${P(v)}</span></div>`;
+  document.getElementById('rows').innerHTML=ativos.map(r=>`
+    <div class="mun">
+      <div class="nm">${esc(r.mun)}<small>Bloco ${r.bloco}</small></div>
+      <div class="bars">${bar('b0',r.p0,'var(--c0)')}${bar('b1',r.pidg,'var(--c1)')}${bar('b2',r.pa,'var(--c2)')}</div>
+      <div class="chg"><b class="${C(r.pa-r.p0)}">${PP(r.pa-r.p0)}</b>desde o início</div>
+    </div>`).join('');
+  document.getElementById('zeros').innerHTML=zer.length?`<b>Sem cobertura de ${nome} (0% nos três momentos):</b> ${zer.map(esc).join(', ')}.`:'';
+  const byName=rs.slice().sort((a,b)=>a.bloco-b.bloco||a.mun.localeCompare(b.mun,'pt-BR'));
+  document.getElementById('tbody').innerHTML=byName.map(r=>`<tr><td>${r.bloco}</td><td>${esc(r.mun)}</td><td>${N(r.den)}</td><td>${N(r.n0)}</td><td>${P(r.p0)}</td><td>${N(r.nidg)}</td><td>${P(r.pidg)}</td><td>${N(r.na)}</td><td>${P(r.pa)}</td></tr>`).join('');
+  document.getElementById('tfoot').innerHTML=`<td></td><td>Total</td><td>${N(A.den)}</td><td>${N(A.n0)}</td><td>${P(A.p0)}</td><td>${N(A.nidg)}</td><td>${P(A.pidg)}</td><td>${N(A.na)}</td><td>${P(A.pa)}</td>`;
+}
+function bind(a){document.querySelectorAll(`[data-${a}]`).forEach(b=>b.onclick=()=>{st[a==='svc'?'svc':'bloco']=b.dataset[a];document.querySelectorAll(`[data-${a}]`).forEach(x=>x.setAttribute('aria-pressed',x===b));render()})}
+bind('svc');bind('bloco');render();
+</script>
+</body>
+</html>
